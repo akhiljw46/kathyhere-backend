@@ -145,4 +145,4 @@ const messageResponse = async (req, res, next) => {
 
 app.get('', (req, res) => res.status(200).json({ status: 'success' }));
 app.post('/v1/message/', messageResponse);
-app.listen(3000, () => console.log('App running'));
+app.listen(process.env.PORT || 1000, () => console.log('App running'));
