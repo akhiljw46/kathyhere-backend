@@ -55,7 +55,7 @@ const safetySettings = [
 ];
 
 async function run(history) {
-  const parts = [...kathy, history, { text: 'output: ' }];
+  const parts = [...tom, history, { text: 'output: ' }];
 
   const result = await model.generateContent({
     contents: [{ role: 'user', parts }],
@@ -93,6 +93,8 @@ const messageResponse = async (req, res, next) => {
   //   console.log(parsedMessages);
 };
 
+const port = process.env.PORT || 3000;
+
 app.get('', (req, res) => res.status(200).json({ status: 'success' }));
 app.post('/v1/message/', messageResponse);
-app.listen(process.env.PORT || 1000, () => console.log('App running'));
+app.listen(port, () => console.log(`App running on port ${port}`));
