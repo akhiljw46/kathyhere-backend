@@ -54,8 +54,9 @@ const safetySettings = [
   },
 ];
 
-async function run(history) {
-  const parts = [...tom, history, { text: 'output: ' }];
+async function run(history, user) {
+  const currentUserParts = user === 'kathy' ? kathy : tom;
+  const parts = [...currentUserParts, history, { text: 'output: ' }];
 
   const result = await model.generateContent({
     contents: [{ role: 'user', parts }],
@@ -78,7 +79,7 @@ const messageResponse = async (req, res, next) => {
     });
   });
 
-  const outputMessage = await run(parsedMessages).catch(err =>
+  const outputMessage = await run(parsedMessages, req.params.user).catch(err =>
     res.status(200).json({
       status: 'success',
       message: 'Please ask me that again!',
@@ -96,5 +97,5 @@ const messageResponse = async (req, res, next) => {
 const port = process.env.PORT || 3000;
 
 app.get('', (req, res) => res.status(200).json({ status: 'success' }));
-app.post('/v1/message/', messageResponse);
+app.post('/v1/message/:user', messageResponse);
 app.listen(port, () => console.log(`App running on port ${port}`));
