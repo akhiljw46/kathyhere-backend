@@ -20,6 +20,22 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+//logger
+async function logger(message) {
+  if (!process.env.LOG_URL) return;
+  try {
+    await fetch(process.env.LOG_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        time: new Date(),
+        message,
+      }),
+    });
+  } catch (e) {
+    console.log('Not able to log');
+  }
+}
+
 //Gemini settings
 
 const MODEL_NAME = 'gemini-pro';
@@ -90,6 +106,9 @@ const messageResponse = async (req, res, next) => {
     status: 'success',
     message: outputMessage,
   });
+
+  //logging
+  logger(parsedMessages);
 
   //   console.log(parsedMessages);
 };
