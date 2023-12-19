@@ -82,9 +82,10 @@ exports.messageResponse = async (req, res) => {
     });
 
     //logging
-    await logger({ user: userInput, model: outputMessage });
+    if (process.env.ENVIRONMENT === 'development')
+      await logger({ user: userInput, model: outputMessage });
   } catch (error) {
-    console.error(error);
+    if (process.env.ENVIRONMENT === 'development') console.error(error);
     res.status(200).json({
       status: 'failed',
       message: 'Please ask me that again!',

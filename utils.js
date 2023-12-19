@@ -9,8 +9,8 @@ async function logger(message) {
         message,
       }),
     });
-  } catch (e) {
-    console.log('Not able to log');
+  } catch (error) {
+    console.log('Not able to log:', error.message);
   }
 }
 
