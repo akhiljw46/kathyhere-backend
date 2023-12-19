@@ -76,6 +76,8 @@ exports.messageResponse = async (req, res) => {
       userInput
     );
 
+    if (!outputMessage) throw new Error('Empty response');
+
     res.status(200).json({
       status: 'success',
       message: outputMessage,
@@ -85,10 +87,13 @@ exports.messageResponse = async (req, res) => {
     if (process.env.ENVIRONMENT === 'development')
       await logger({ user: userInput, model: outputMessage });
   } catch (error) {
-    if (process.env.ENVIRONMENT === 'development') console.error(error);
-    res.status(200).json({
+    if (process.env.ENVIRONMENT === 'development') {
+      logger({ error: error.message });
+      console.error(error);
+    }
+    res.status(500).json({
       status: 'failed',
-      message: 'Please ask me that again!',
+      message: error.message,
     });
   }
 };
