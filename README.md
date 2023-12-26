@@ -43,7 +43,7 @@ With payload in the forllowing format:
 {
     "messages": [
         {
-            "id": "1703609459098",
+            "id": 1703609459098,
             "isUser": false,
             "messageText": "Message by AI"
         },
